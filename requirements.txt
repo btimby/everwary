@@ -1,0 +1,11 @@
+pyftpdlib
+pysendfile
+circus
+gearman
+Django
+sh
+MySQL-python
+djangorestframework
+markdown
+pyyaml
+django-filter

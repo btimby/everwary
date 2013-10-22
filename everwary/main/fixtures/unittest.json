@@ -1,0 +1,80 @@
+[
+{
+    "pk": "1",
+    "model": "main.camera", 
+    "fields": {
+        "name": "cam00", 
+        "zone": "3",
+        "url": "http://192.168.1.90:88/",
+        "disabled": false,
+        "model": 1,
+        "auth": "8f55a2ea-4b9d-4133-b89b-d5874d652544",
+        "key": "67b2e671-4673-4b75-b8d2-b07fef05e8ea",
+        "username": "admin",
+        "password": "12345",
+        "created": "2013-10-03 17:41:28",
+        "updated": "2013-10-03 17:41:28"
+    }
+},
+{
+    "pk": "2",
+    "model": "main.camera", 
+    "fields": {
+        "name": "cam01", 
+        "zone": "2",
+        "url": "http://192.168.1.89:88/",
+        "disabled": false, 
+        "model": 2,
+        "auth": "32a38bd1-6d58-48eb-9c10-ac55accb9e7d",
+        "key": "c33a2d5d-e201-4873-9de9-fb807dda63f9",
+        "username": "admin",
+        "password": "12345",
+        "created": "2013-10-03 17:41:28",
+        "updated": "2013-10-03 17:41:28"
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "btimby", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2013-10-01T18:00:41.296Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$nzrYlcs1U5wg$d1NTZMAY0wiFT9z9k5WAbizxw1l9GuDCXAvR8Oh6/7M=",
+        "email": "btimby@gmail.com", 
+        "date_joined": "2013-10-01T18:00:41.296Z"
+    }
+},
+{
+    "pk": "1",
+    "model": "main.zone",
+    "fields": {
+        "user": 1,
+        "name": "149 Lockerbie Lane"
+    }
+},
+{
+    "pk": "2",
+    "model": "main.zone",
+    "fields": {
+        "user": 1,
+        "name": "Indoor",
+        "parent": 1
+    }
+},
+{
+    "pk": "3",
+    "model": "main.zone",
+    "fields": {
+        "user": 1,
+        "name": "Outdoor",
+        "parent": 1
+    }
+}
+]
