@@ -1,0 +1,21 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+env:
+  - DJANGO=1.2
+  - DJANGO=1.3
+  - DJANGO=1.4
+  - DJANGO=1.5
+install:
+  - pip install --timeout=30 pep8 --use-mirrors
+  - pip install --timeout=30 pyflakes --use-mirrors
+  - pip install --timeout=30 -r requirements.txt --use-mirrors
+  - pip install --timeout=30 -q -e . --use-mirrors
+before_script:
+  - make verify
+script:
+  - make test
+after_success:
+  - coveralls

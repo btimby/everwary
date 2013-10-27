@@ -1,5 +1,5 @@
 test:
-	../env/bin/python manage.py test main
+	../env/bin/python manage.py test main www api services
 
 runserver:
 	../env/bin/python manage.py runserver 8000

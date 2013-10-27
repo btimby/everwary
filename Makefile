@@ -26,8 +26,11 @@ env: requirements.txt
 test: env
 	${MAKE} --directory=everwary test
 
+travis:
+	${MAKE} --directory=everwary test
+
 verify:
-	pyflakes -x W everwary
+	pyflakes everwary
 	pep8 --exclude=migrations --ignore=E501,E225 everwary
 
 minify:

@@ -2,8 +2,6 @@ import os
 import glob
 import importlib
 
-from main.cameras.base import BaseCamera
-
 
 BACKEND_PATTERN = '*.py'
 
@@ -25,7 +23,7 @@ def iter_backends():
 def iter_cameras(module):
     for name in dir(module):
         klass = getattr(module, name)
-        if issubclass(klass, BaseCamera):
+        if hasattr(klass, 'make') and hasattr(klass, 'model'):
             yield klass
 
 
