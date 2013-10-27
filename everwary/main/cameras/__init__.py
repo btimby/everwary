@@ -1,6 +1,7 @@
 import os
 import glob
-import importlib
+
+from django.utils import importlib
 
 
 BACKEND_PATTERN = '*.py'
