@@ -10,6 +10,7 @@ djangorestframework
 markdown
 pyyaml
 django-filter
+requests
 
 # For hosting:
 meinheld
