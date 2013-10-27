@@ -16,6 +16,10 @@ requests
 meinheld
 chaussette
 
+# For Travis CI:
+pep8
+pyflakes
+
 # For coveralls.io:
 coverage
 coveralls

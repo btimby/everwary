@@ -1,5 +1,6 @@
 import os
 import sys
+import errno
 import string
 import random
 import tempfile
@@ -217,7 +218,11 @@ GEARMAN_SERVERS = (
 )
 
 # Override settings if local settings file exists.
-local_settings = os.path.join(os.path.dirname(__file__), 'settings_local.py')
-if os.path.exists(local_settings):
-    with file(local_settings, 'r') as f:
-        exec f in globals()
+try:
+    local_settings = os.path.join(os.path.dirname(__file__), 'settings_local.py')
+    if os.path.isfile(local_settings):
+        with file(local_settings, 'r') as f:
+            exec f in globals()
+except OSError, e:
+    if e.errno != errno.EACCES:
+        raise
