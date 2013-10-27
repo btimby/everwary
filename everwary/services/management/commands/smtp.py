@@ -1,22 +1,39 @@
 import base64
+import socket
+import logging
 import asyncore
 
 from email.parser import Parser
 
+import smtpd
 from smtpd import NEWLINE
 from smtpd import EMPTYSTRING
-from smtpd import DEBUGSTREAM
 from smtpd import SMTPChannel as BaseSMTPChannel
 from smtpd import SMTPServer as BaseSMTPServer
 
 from optparse import make_option
 
 from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 
 from main.models import Camera
 from main.models import Image
 from main.models import Event
 from services.async import GEARMAN
+
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.addHandler(logging.StreamHandler())
+
+
+class SMTPLogger(object):
+    """Simple class that logs via logging module."""
+    def write(self, message):
+        LOGGER.debug(message)
+
+
+# Cause smtpd module to log via logging module
+smtpd.DEBUGSTREAM = SMTPLogger()
 
 
 class SMTPAuth(object):
@@ -38,7 +55,7 @@ class SMTPChannel(BaseSMTPChannel):
 
     def found_terminator(self):
         line = EMPTYSTRING.join(self.__line)
-        print >> DEBUGSTREAM, 'Data:', repr(line)
+        print >> smtpd.DEBUGSTREAM, 'Data:', repr(line)
         self.__line = []
         if self.__state == self.COMMAND:
             if not line:
@@ -137,8 +154,13 @@ class SMTPChannel(BaseSMTPChannel):
 class SMTPServer(BaseSMTPServer):
     """smtpd.SMTPServer subclass that supports AUTH and processes images
     from message bodies."""
-    def __init__(self, address, authenticator=SMTPAuth()):
-        BaseSMTPServer.__init__(self, address, None)
+    def __init__(self, address_or_socket, authenticator=SMTPAuth()):
+        if callable(getattr(address_or_socket, 'listen', None)):
+            asyncore.dispatcher.__init__(self)
+            address_or_socket.setblocking(0)
+            self.set_socket(address_or_socket)
+        else:
+            BaseSMTPServer.__init__(self, address_or_socket, None)
         self.authenticator = authenticator
         self.parser = Parser()
 
@@ -146,7 +168,7 @@ class SMTPServer(BaseSMTPServer):
         pair = self.accept()
         if pair is not None:
             conn, addr = pair
-            print >> DEBUGSTREAM, 'Incoming connection from %s' % repr(addr)
+            print >> smtpd.DEBUGSTREAM, 'Incoming connection from %s' % repr(addr)
             channel = SMTPChannel(self, conn, addr, authenticator=self.authenticator)
 
     def process_message(self, username, peer, mailfrom, rcpttos, data):
@@ -184,14 +206,22 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--port',
                     type='int',
-                    default=25,
                     help='TCP port to bind'),
         make_option('--addr',
                     type='string',
-                    default='0.0.0.0',
                     help='IP address to bind'),
+        make_option('--fd',
+                    type='int',
+                    help='File descriptor of open listening socket'),
     )
 
     def handle(self, *args, **kwargs):
-        server = SMTPServer((kwargs['addr'], kwargs['port']))
+        if kwargs.get('fd'):
+            sock = socket.fromfd(kwargs['fd'], socket.AF_INET, socket.SOCK_STREAM)
+        elif kwargs.get('addr') and kwargs.get('port'):
+            sock = (kwargs["addr"], kwargs['port'])
+        else:
+            raise CommandError('Must specify addr/port or fd for listening')
+
+        server = SMTPServer(sock)
         server.start()

@@ -1,10 +1,12 @@
 import os
+import socket
 import mimetypes
 
 from optparse import make_option
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 
 from pyftpdlib.handlers import FTPHandler as BaseFTPHandler
 from pyftpdlib.servers import FTPServer
@@ -93,12 +95,13 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--port',
                     type='int',
-                    default=21,
                     help='TCP port to bind'),
         make_option('--addr',
                     type='string',
-                    default='0.0.0.0',
                     help='IP address to bind'),
+        make_option('--fd',
+                    type='int',
+                    help='File descriptor of open listening socket'),
     )
 
     def handle(self, *args, **kwargs):
@@ -107,5 +110,12 @@ class Command(BaseCommand):
         handler.abstracted_fs = FTPImageStorageFS
         handler.banner = 'Camden FTP server'
 
-        server = FTPServer((kwargs["addr"], kwargs['port']), handler)
+        if kwargs.get('fd'):
+            sock = socket.fromfd(kwargs['fd'], socket.AF_INET, socket.SOCK_STREAM)
+        elif kwargs.get('addr') and kwargs.get('port'):
+            sock = (kwargs["addr"], kwargs['port'])
+        else:
+            raise CommandError('Must specify addr/port or fd for listening')
+
+        server = FTPServer(sock, handler)
         server.serve_forever()
