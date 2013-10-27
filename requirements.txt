@@ -15,3 +15,7 @@ requests
 # For hosting:
 meinheld
 chaussette
+
+# For coveralls.io:
+coverage
+coveralls
