@@ -10,6 +10,7 @@ env:
   - DJANGO=1.5
 before_install:
   - sudo apt-get install -qq libzmq3-dev
+  - sudo apt-get install -qq gearman-job-server
 install:
   - pip install --timeout=30 pep8 --use-mirrors
   - pip install --timeout=30 pyflakes --use-mirrors
