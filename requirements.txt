@@ -4,6 +4,7 @@ circus
 gearman
 Django
 sh
+fs
 MySQL-python
 djangorestframework
 markdown
