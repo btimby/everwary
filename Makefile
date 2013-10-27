@@ -1,16 +1,16 @@
 all: runserver
 
 migration: env
-	${MAKE} --directory=camden migration
+	${MAKE} --directory=everwary migration
 
 migrate: env
-	${MAKE} --directory=camden migrate
+	${MAKE} --directory=everwary migrate
 
 runserver: env
-	${MAKE} --directory=camden runserver
+	${MAKE} --directory=everwary runserver
 
 dbshell: env
-	${MAKE} --directory=camden dbshell
+	${MAKE} --directory=everwary dbshell
 
 env: requirements.txt
 	curl -O http://python-distribute.org/distribute_setup.py
@@ -24,18 +24,18 @@ env: requirements.txt
 	env/bin/pip install -r requirements.txt
 
 test: env
-	${MAKE} --directory=camden test
+	${MAKE} --directory=everwary test
 
 verify:
-	pyflakes -x W camden
-	pep8 --exclude=migrations --ignore=E501,E225 camden
+	pyflakes -x W everwary
+	pep8 --exclude=migrations --ignore=E501,E225 everwary
 
 minify:
-	yuicompressor camden/main/static/css/base.css -o camden/main/static/css/base.min.css
-	yuicompressor camden/main/static/js/main.js -o camden/main/static/js/main.min.js
+	yuicompressor everwary/main/static/css/base.css -o everwary/main/static/css/base.min.css
+	yuicompressor everwary/main/static/js/main.js -o everwary/main/static/js/main.min.js
 
 deploy: minify
-	rsync -vr * btimby@sfileapp.com:/usr/local/smartfile/apps/camden/ --exclude=env --delete --exclude=.svn --exclude=*.pyc
+	rsync -vr * btimby@sfileapp.com:/usr/local/smartfile/apps/everwary/ --exclude=env --delete --exclude=.svn --exclude=*.pyc
 
 clean:
 	find . -name *.pyc -delete
