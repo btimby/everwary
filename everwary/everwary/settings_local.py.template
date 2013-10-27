@@ -1,0 +1,20 @@
+# You should uncomment these unless you are developing.
+# DEBUG = False
+# TEMPLATE_DEBUG = False
+
+# Configure your database.
+# DATABASES['default' = {
+#     ...
+# }
+
+# Configure a cache.
+# CACHES = {
+#     ...
+# }
+
+# Anything else configured in settings.py can be overridden. Also refer to the
+# Django settings documentation for an idea of what settings are available.
+# https://docs.djangoproject.com/en/dev/topics/settings/
+# In addition, much of Django REST Framework can be controlled via
+# settings.
+# http://django-rest-framework.org/api-guide/settings.html
