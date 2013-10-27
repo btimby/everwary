@@ -1,0 +1,81 @@
+#
+# circusd          Start up the circus daemon
+#
+# chkconfig: 2345 55 25
+# description: Circus is a software monitor for running other daemons.
+#
+# processname: sshd
+# config: /etc/ssh/ssh_host_key
+# config: /etc/ssh/ssh_host_key.pub
+# config: /etc/ssh/ssh_random_seed
+# config: /etc/ssh/sshd_config
+# pidfile: /var/run/sshd.pid
+
+### BEGIN INIT INFO
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop logmein-hamachi engine
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+VIRTUALENV=/var/www/everwary.com/env
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="circus daemon"
+NAME=circusd
+DAEMON=${VIRTUALENV}/bin/circusd
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+DAEMON_ARGS="--daemon --log-output=/var/log/circusd.log --log-level=DEBUG --pidfile=$PIDFILE /etc/circus.ini"
+
+test -x "$DAEMON" || exit 0
+
+RETVAL=0
+
+start() {
+        echo -n $"Starting $DESC: "
+	daemon $DAEMON $DAEMON_ARGS
+	RETVAL=$?
+	echo
+}
+
+stop() {
+	echo -n $"Stopping $DESC: "
+	killproc $DAEMON
+	RETVAL=$?
+        rm -f $PIDFILE
+	echo
+}
+
+#
+#	See how we were called.
+#
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  reload|restart)
+	stop
+	start
+	RETVAL=$?
+	;;
+  condrestart)
+	if [ -f $PIDFILE ]; then
+	    stop
+	    start
+	fi
+	;;
+  status)
+	status $DAEMON
+	RETVAL=$?
+	;;
+  *)
+	echo $"Usage: $0 {condrestart|start|stop|restart|reload|status}"
+	exit 1
+esac
+
+exit $RETVAL
