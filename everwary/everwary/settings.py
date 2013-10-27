@@ -210,7 +210,7 @@ REST_FRAMEWORK = {
     )
 }
 
-ALARM_IMAGE_DIR = '/home/btimby/Code/python/everwary/data/cams'
+ALARM_IMAGE_DIR = os.path.join(tempfile.tempdir, 'everwary')
 
 GEARMAN_SERVERS = (
     'localhost',

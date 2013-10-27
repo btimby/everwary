@@ -191,5 +191,5 @@ class FTPTest(TransactionTestCase):
             self.client.login(TEST_USERNAME, TEST_PASSWORD)
         except ftplib.error_perm:
             self.fail('Could not upload due to authentication failure')
-        self.client.storbinary('STOR example.jpe', StringIO(TEST_IMAGE))
+        self.client.storbinary('STOR example.jpg', StringIO(TEST_IMAGE))
         self.assertGreater(Image.objects.all().count(), 0)
