@@ -8,6 +8,8 @@ env:
   - DJANGO=1.3
   - DJANGO=1.4
   - DJANGO=1.5
+before_install:
+  - sudo apt-get install -qq libzmq-dev
 install:
   - pip install --timeout=30 pep8 --use-mirrors
   - pip install --timeout=30 pyflakes --use-mirrors
