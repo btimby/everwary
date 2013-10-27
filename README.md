@@ -1,3 +1,7 @@
+[![Travis CI Status](https://travis-ci.org/btimby/everwary.png)](https://travis-ci.org/btimby/everwary)
+
+[![Code Coverage](https://coveralls.io/repos/btimby/everwary/badge.png?branch=master)](https://coveralls.io/r/btimby/everwary)
+
 EverWary
 ========
 
