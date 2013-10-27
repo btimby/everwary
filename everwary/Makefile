@@ -1,15 +1,15 @@
 test:
-	../env/bin/python manage.py test main www api services
+	python manage.py test main www api services
 
 runserver:
-	../env/bin/python manage.py runserver 8000
+	python manage.py runserver 8000
 
 migration:
-	../env/bin/python manage.py schemamigration main --auto
+	python manage.py schemamigration main --auto
 
 migrate:
-	../env/bin/python manage.py migrate main
+	python manage.py migrate main
 
 dbshell:
-	../env/bin/python manage.py dbshell
+	python manage.py dbshell
 

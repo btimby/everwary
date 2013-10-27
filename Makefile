@@ -12,7 +12,9 @@ runserver: env
 dbshell: env
 	${MAKE} --directory=everwary dbshell
 
-env: requirements.txt
+env: env/bin/activate
+
+env/bin/activate: requirements.txt
 	curl -O http://python-distribute.org/distribute_setup.py
 	curl -O https://raw.github.com/pypa/virtualenv/master/virtualenv.py
 	curl -O https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz
@@ -22,6 +24,8 @@ env: requirements.txt
 	rm -rf distribute_setup.py* virtualenv.py* setuptools-1.1.6.tar.gz pip-1.4.1.tar.gz distribute-*.tar.gz
 	env/bin/pip install --upgrade distribute
 	env/bin/pip install -r requirements.txt
+	. env/bin/activate
+	touch env/bin/activate
 
 test: env
 	${MAKE} --directory=everwary test
