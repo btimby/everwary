@@ -2,6 +2,8 @@ import os
 import glob
 import importlib
 
+from main.cameras.base import BaseCamera
+
 
 BACKEND_PATTERN = '*.py'
 
@@ -31,15 +33,10 @@ def get_backend(camera):
     """Finds a camera backend that supports the given make/model."""
     # Asks each available backend if this make/model is supported.
     for module in iter_backends():
-        try:
-            for klass in iter_cameras(module):
-                if ((getattr(klass, 'make') == camera.make and
-                     camera.model in getattr(klass, 'models'))):
-                    return klass(camera)
-        except AttributeError:
-            # AttributeError signifies a code module that is not
-            # a backend. It is OK to ignore this exception.
-            continue
+        for klass in iter_cameras(module):
+            if ((getattr(klass, 'make', '').lower() == camera.make and
+                 camera.model in getattr(klass, 'models', []))):
+                return klass(camera)
     raise NotSupportedError(camera)
 
 
