@@ -54,36 +54,6 @@ class UUIDKeyModel(models.Model):
                           default=make_uuid, editable=False)
 
 
-class Make(models.Model):
-    """Camera manufacturer."""
-    name = models.CharField(max_length=128, unique=True)
-    # Details about this manufacturer, quirks etc.
-    notes = models.TextField()
-
-    def __unicode__(self):
-        return self.name
-
-    def __repr__(self):
-        return unicode(self)
-
-
-class Model(models.Model):
-    """Camera model."""
-    class Meta:
-        unique_together = ('make', 'name')
-
-    make = models.ForeignKey(Make)
-    name = models.CharField(max_length=128)
-    # Details about this model, quirks etc.
-    notes = models.TextField()
-
-    def __unicode__(self):
-        return '%s %s' % (self.make.name, self.name)
-
-    def __repr__(self):
-        return unicode(self)
-
-
 class Zone(models.Model):
     """A zone within which cameras are placed. Think of this as a
     category, or physical location. It's usage is up to the user."""
@@ -165,7 +135,8 @@ class Camera(models.Model):
     # The zone/location of the camera
     zone = models.ForeignKey(Zone, related_name='cameras')
     # The camera make/model
-    model = models.ForeignKey(Model)
+    make = models.CharField(max_length=128)
+    model = models.CharField(max_length=128)
     # The latest state of the camera
     state = models.IntegerField(choices=CAMERA_STATES.items(),
                                 default=CAMERA_STATE_UNKNOWN)

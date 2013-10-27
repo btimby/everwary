@@ -7,16 +7,21 @@ from sh import ffmpeg
 
 from django.utils import timezone
 
-from main.models import Video
+from main.cameras.base import BaseCamera
 
 
-def supports(make, model=None):
-    return make.lower() == 'foscam'
+MODELS = {
+    'FI9805W': 'Outdoor Waterproof HD WIFI Camera',
+    'FI9821W V2': 'Indoor Pan/Tilt WIFI HD Camera',
+}
 
 
-class Camera(object):
+class Camera(BaseCamera):
+    make = 'Foscam'
+    models = MODELS.keys()
+
     def __init__(self, camera):
-        self.camera = camera
+        super(Camera, self).__init__(camera)
         self.recording = None
 
     def build_url(self, type):
@@ -26,6 +31,7 @@ class Camera(object):
         # http://192.168.1.89:88/CGIProxy.fcgi?usr=admin&pwd=12345&cmd=setSubStreamFormat&format=1
         # Capture stream
         # http://192.168.1.87:88/cgi-bin/CGIStream.cgi?cmd=GetMJStream\&usr=admin\&pwd=12345
+        # TODO: use requests.
         urlp = urlparse.urlsplit(self.camera.url)
         params = {
             'usr': self.camera.username,
@@ -42,17 +48,6 @@ class Camera(object):
         return urlparse.SplitResult(urlp.scheme, urlp.netloc,
                                     path, urllib.urlencode(params),
                                     urlp.fragment).geturl()
-
-    def get_video(self):
-        return Video.objects.create(camera=self.camera, mime='video/x-msvideo')
-
-    def health(self):
-        """Performs a camera health check."""
-        pass
-
-    def capture(self):
-        """Captures a still image."""
-        pass
 
     def record(self):
         """Records video."""

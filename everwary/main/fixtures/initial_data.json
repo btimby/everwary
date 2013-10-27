@@ -6,31 +6,5 @@
         "domain": "localhost",
         "name": "everwary"
     }
-},
-{
-    "pk": 1, 
-    "model": "main.make", 
-    "fields": {
-        "notes": "", 
-        "name": "Foscam"
-    }
-},
-{
-    "pk": 1, 
-    "model": "main.model", 
-    "fields": {
-        "notes": "Outdoor Waterproof IP Camera", 
-        "make": 1, 
-        "name": "FI9805W"
-    }
-},
-{
-    "pk": 2, 
-    "model": "main.model", 
-    "fields": {
-        "notes": "Indoor Pan/Tilt IP Camera", 
-        "make": 1, 
-        "name": " FI9821W V2"
-    }
 }
 ]

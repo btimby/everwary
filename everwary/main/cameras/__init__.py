@@ -9,24 +9,33 @@ BACKEND_PATTERN = '*.py'
 def iter_backends():
     """Iterates over all camera backend modules."""
     # Get a directory listing of all the backends
-    for n in glob.glob('%s/%s' % (os.path.dirname(__file__), BACKEND_PATTERN)):
+    for path in glob.glob('%s/%s' % (os.path.dirname(__file__), BACKEND_PATTERN)):
         # Remove the leading directory name
-        n = os.path.basename(n)
+        path = os.path.basename(path)
         # Skip __init__.py and it's ilk.
-        if n.startswith('__'):
+        if path.startswith('__'):
             continue
         # Remove the extension
-        n = os.path.splitext(n)[0]
-        yield importlib.import_module('%s.%s' % (__name__, n))
+        path = os.path.splitext(path)[0]
+        yield importlib.import_module('%s.%s' % (__name__, path))
+
+
+def iter_cameras(module):
+    for name in dir(module):
+        klass = getattr(module, name)
+        if issubclass(klass, BaseCamera):
+            yield klass
 
 
 def get_backend(camera):
     """Finds a camera backend that supports the given make/model."""
     # Asks each available backend if this make/model is supported.
-    for b in iter_backends():
+    for module in iter_backends():
         try:
-            if b.supports(camera.model.make.name, camera.model.name):
-                return b.Camera(camera)
+            for klass in iter_cameras(module):
+                if ((getattr(klass, 'make') == camera.make and
+                     camera.model in getattr(klass, 'models'))):
+                    return klass(camera)
         except AttributeError:
             # AttributeError signifies a code module that is not
             # a backend. It is OK to ignore this exception.
