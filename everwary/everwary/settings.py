@@ -202,3 +202,9 @@ ALARM_IMAGE_DIR = '/home/btimby/Code/python/everwary/data/cams'
 GEARMAN_SERVERS = (
     'localhost',
 )
+
+# Override settings if local settings file exists.
+local_settings = os.path.join(os.path.dirname(__file__), 'settings_local.py')
+if os.path.exists(local_settings):
+    with file(local_settings, 'r') as f:
+        exec f in globals()
