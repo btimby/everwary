@@ -59,6 +59,7 @@ instructions.
 4. You can start the application by running the following commands.
 
 
+    $ python manage.py syncdb
     $ source env/bin/activate
     $ circusd -c bin/circus.ini
 
@@ -79,6 +80,14 @@ change. This application supports a settings_local.py file in which you can
 override any of the defaults present in settings.py. See
 `everwary/settings_local.py.template` for some examples.
 
+Cameras
+=======
+
+Before you can log in and start adding cameras, they must be accessible to the
+EverWary server. This means the usual filtering/NAT port forwarding rules to
+allow at least the server to hit the HTTP(S) ports on the camera. Once you add
+a camera to EverWary, you can auto-configure it, which will set the camera up
+using the optimal configuration for the given model.
 
 Development
 ===========
