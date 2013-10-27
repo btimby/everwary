@@ -20,6 +20,10 @@ LOGGER = logging.getLogger(__name__)
 
 
 def task(f):
+    # TODO: Replace the function with a class that provides:
+    # An apply() method, which when TESTING = True executes
+    # the task immediately (not using gearman), and also an
+    # apply_wait() that will return the result.
     @wraps(f)
     def decorator(worker, job):
         args = job.data.get('args', ())
