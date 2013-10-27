@@ -9,3 +9,7 @@ djangorestframework
 markdown
 pyyaml
 django-filter
+
+# For hosting:
+meinheld
+chaussette
