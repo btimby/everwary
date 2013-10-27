@@ -15,4 +15,3 @@ class EventFilterForm(forms.Form):
             return CAMERA_EVENTS_REVERSE[value]
         except KeyError:
             raise forms.ValidationError('Invalid event name "%s"' % value)
-

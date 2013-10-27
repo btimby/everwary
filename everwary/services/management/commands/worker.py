@@ -62,7 +62,7 @@ class Command(BaseCommand):
             try:
                 worker.work()
                 break
-            except ServerUnavailable, e:
+            except ServerUnavailable:
                 LOGGER.info('Gearmand unreachable will retry...')
                 time.sleep(30)
                 continue

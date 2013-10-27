@@ -107,7 +107,6 @@ class SMTPTest(TransactionTestCase):
         self.assertRaises(smtplib.SMTPAuthenticationError, self.client.login,
                           TEST_USERNAME, TEST_PASSWORD)
 
-
     def test_send(self):
         """Ensure an image attachment is properly saved."""
         try:

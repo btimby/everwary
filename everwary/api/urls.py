@@ -1,4 +1,5 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns
+from django.conf.urls import url
 
 from api.rest.views import ZoneList
 from api.rest.views import ZoneDetail
@@ -16,7 +17,8 @@ from api.rest.views import VideoDetail
 from api.rest.views import VideoStream
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^zones/$', ZoneList.as_view(), name='api.zone-list'),
     url(r'^zones/(?P<pk>[0-9]+)/$', ZoneDetail.as_view(), name='api.zone-detail'),
 

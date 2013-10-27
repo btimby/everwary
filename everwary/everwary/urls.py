@@ -1,6 +1,10 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns
+from django.conf.urls import include
+from django.conf.urls import url
 
-urlpatterns = patterns('',
+
+urlpatterns = patterns(
+    '',
     url(r'^api/', include('api.urls')),
     url(r'^', include('www.urls')),
 )

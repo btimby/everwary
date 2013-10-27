@@ -76,6 +76,6 @@ class Camera(BaseCamera):
                 raise Exception('Runaway recording process')
             time.sleep(0.01)
         self.recording = None
-        v.duration = (timezone.now()-v.created).seconds
+        v.duration = (timezone.now() - v.created).seconds
         v.save()
         return v

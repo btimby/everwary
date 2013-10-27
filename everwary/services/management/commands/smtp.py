@@ -74,7 +74,7 @@ class SMTPChannel(BaseSMTPChannel):
                 arg = None
             else:
                 command = line[:i].upper()
-                arg = line[i+1:].strip()
+                arg = line[i + 1:].strip()
             # White list of operations that are allowed prior to AUTH.
             if not command in ['AUTH', 'EHLO', 'HELO', 'NOOP', 'RSET', 'QUIT']:
                 if self.authenticator and not self.authenticated:
@@ -133,13 +133,13 @@ class SMTPChannel(BaseSMTPChannel):
             # along with the 'LOGIN' stanza, hence both situations are
             # handled.
             if len(split_args) == 2:
-                self.username = base64.b64decode( arg.split(' ')[1] )
+                self.username = base64.b64decode(arg.split(' ')[1])
                 self.push('334 ' + base64.b64encode('Username'))
             else:
                 self.push('334 ' + base64.b64encode('Username'))
 
         elif not self.username:
-            self.username = base64.b64decode( arg )
+            self.username = base64.b64decode(arg)
             self.push('334 ' + base64.b64encode('Password'))
         else:
             self.authenticating = False
@@ -169,7 +169,7 @@ class SMTPServer(BaseSMTPServer):
         if pair is not None:
             conn, addr = pair
             print >> smtpd.DEBUGSTREAM, 'Incoming connection from %s' % repr(addr)
-            channel = SMTPChannel(self, conn, addr, authenticator=self.authenticator)
+            SMTPChannel(self, conn, addr, authenticator=self.authenticator)
 
     def process_message(self, username, peer, mailfrom, rcpttos, data):
         """Parses the message body, then saves the first encountered image.

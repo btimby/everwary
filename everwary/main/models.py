@@ -1,6 +1,5 @@
 import os
 import uuid
-import errno
 import mimetypes
 
 from datetime import timedelta
@@ -23,7 +22,7 @@ class EventQuerySet(QuerySet):
     def filter(self, *args, **kwargs):
         timeago = kwargs.pop('timeago', None)
         if timeago:
-            kwargs['created__gte'] = timezone.now()-timedelta(seconds=timeago)
+            kwargs['created__gte'] = timezone.now() - timedelta(seconds=timeago)
         return super(EventQuerySet, self).filter(*args, **kwargs)
 
 
